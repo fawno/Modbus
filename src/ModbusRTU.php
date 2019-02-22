@@ -5,6 +5,8 @@
 
 	class ModbusRTU {
 		private const MODBUS_REQUEST = 'C2n2';
+		public const MODBUS_RESPONSE = 'C1station/C1function/n1address/n1records/';
+		public const MODBUS_ERROR = 'C1station/C1error/C1exception/';
 
 		private $serial = null;
 
@@ -58,6 +60,14 @@
 
 		public function requestSend (int $station, int $function, int $address, int $records) {
 			$message = pack(self::MODBUS_REQUEST, $station, $function, $address, $records);
+
+			if ($function == 0x10) {
+				if (func_num_args() != (4 + $records)) {
+					return false;
+				}
+				$message .= pack('C1n*', 2 * $records, ...array_slice(func_get_args(), 4));
+			}
+
 			$message .= $this->crc16($message);
 
 			$this->serial->send($message, true);
@@ -67,8 +77,13 @@
 				if (strlen($buffer) > 5) {
 					return $buffer;
 				} else {
-					echo bin2hex($buffer), PHP_EOL;
 					return false;
+				}
+			}
+
+			if (strlen($buffer) > 4) {
+				if (substr($buffer, 3, 2) == $this->crc16(substr($buffer, 0, 3))) {
+					return substr($buffer, 0, 5);
 				}
 			}
 

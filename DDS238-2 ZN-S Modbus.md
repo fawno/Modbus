@@ -8,8 +8,8 @@
 | 0002h-0003h | reserved        |            | unsigned dword |     |
 | 0004h-0005h | reserved        |            | unsigned dword |     |
 | 0006h-0007h | reserved        |            | unsigned dword |     |
-| 0008h-0009h | export energy   | 1/100 kWh  | unsigned dword |  R¹ |
-| 000Ah-000Bh | import energy   | 1/100 kWh  | unsigned dword |  R¹ |
+| 0008h-0009h | export energy   | 1/100 kWh  | unsigned dword |  R  |
+| 000Ah-000Bh | import energy   | 1/100 kWh  | unsigned dword |  R  |
 | 000Ch       | voltage         | 1/10 V     | unsigned word  |  R  |
 | 000Dh       | current         | 1/100 A    | unsigned word  |  R  |
 | 000Eh       | active power    | 1 W        | signed   word  |  R  |
@@ -21,13 +21,13 @@
 | 0014h       | reserved        |            | unsigned word  |     |
 | 0015h:high  | station address | 1-247      | unsigned char  | R/W |
 | 0015h:low   | baud rate       | 1-4²       | unsigned char  | R/W |
-| 0016h-0017h | trip energy     | 1/100 kWh  | unsigned dword |  R¹ |
 
 #### Notes:
 
 ##### Note 1:
 
-Erasable records writing 0.
+Total, export and import energy counters can erased writing 0 in total energy
+registers.
 
 ##### Note 2:
 
