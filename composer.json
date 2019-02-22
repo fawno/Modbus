@@ -14,6 +14,9 @@
         "issues": "https://github.com/fawno/Modbus/issues",
         "source": "https://github.com/fawno/Modbus"
     },
+    "require": {
+        "blamebutton/php-serial": "dev-fawno"
+    },
     "autoload": {
         "psr-4": {
             "Fawno\\Modbus\\": "src"

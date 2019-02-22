@@ -1,7 +1,7 @@
 <?php
 	namespace Fawno\Modbus;
 
-	use Fawno\Modbus\SerialConnection;
+	use SerialConnection\SerialConnection;
 
 	class ModbusRTU {
 		private const MODBUS_REQUEST = 'C2n2';
