@@ -8,8 +8,8 @@
 | 0002h-0003h | reserved        |            | unsigned dword |     |
 | 0004h-0005h | reserved        |            | unsigned dword |     |
 | 0006h-0007h | reserved        |            | unsigned dword |     |
-| 0008h-0009h | export energy   | 1/100 kWh  | unsigned dword |  R  |
-| 000Ah-000Bh | import energy   | 1/100 kWh  | unsigned dword |  R  |
+| 0008h-0009h | export energy   | 1/100 kWh  | unsigned dword |  R¹ |
+| 000Ah-000Bh | import energy   | 1/100 kWh  | unsigned dword |  R¹ |
 | 000Ch       | voltage         | 1/10 V     | unsigned word  |  R  |
 | 000Dh       | current         | 1/100 A    | unsigned word  |  R  |
 | 000Eh       | active power    | 1 W        | signed   word  |  R  |
