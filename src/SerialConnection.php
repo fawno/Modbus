@@ -1,5 +1,5 @@
 <?php
-	namespace SerialConnection;
+	namespace Fawno\Modbus;
 
 	/**
 	 * Serial port control class
