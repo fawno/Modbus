@@ -1,6 +1,6 @@
 {
     "name": "fawno/modbus",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Modbus RTU serial protocol in PHP",
     "keywords": ["Modbus RTU", "DDS238"],
     "license": "MIT",
@@ -20,6 +20,9 @@
     "autoload": {
         "psr-4": {
             "Fawno\\Modbus\\": "src"
-        }
+        },
+        "classmap": [
+            "src/SerialConnection.php"
+        ]
     }
 }
