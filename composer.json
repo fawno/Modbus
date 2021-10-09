@@ -1,6 +1,6 @@
 {
     "name": "fawno/modbus",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Modbus RTU serial protocol in PHP",
     "keywords": ["Modbus RTU", "DDS238"],
     "license": "MIT",
@@ -15,7 +15,8 @@
         "source": "https://github.com/fawno/Modbus"
     },
     "require": {
-        "blamebutton/php-serial": "dev-fawno"
+				"php": ">=7.4.0",
+				"ext-dio": ">=0.2.0"
     },
     "autoload": {
         "psr-4": {

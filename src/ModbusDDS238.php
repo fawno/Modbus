@@ -55,12 +55,12 @@
 		}
 
 		public function setDevice (string $device) {
-			$this->modbus->setDevice('COM4');
-			$this->modbus->setBaudRate(9600);
-			$this->modbus->setParity('none');
-			$this->modbus->setCharacterLength(8);
+			$this->modbus->setDevice($device);
+			$this->modbus->setDataRate(9600);
+			$this->modbus->setParity(0);
+			$this->modbus->setDataBits(8);
 			$this->modbus->setStopBits(1);
-			$this->modbus->setFlowControl('none');
+			$this->modbus->setFlowControl(0);
 		}
 
 		public function open () {
