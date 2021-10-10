@@ -1,0 +1,65 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "b42fbd5f13a603ac20cb1d8e0a8b4917",
+    "packages": [
+        {
+            "name": "fawno/php-serial",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fawno/PHP-Serial.git",
+                "reference": "d42e018506cda19047c90fc194af58128afc75de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fawno/PHP-Serial/zipball/d42e018506cda19047c90fc194af58128afc75de",
+                "reference": "d42e018506cda19047c90fc194af58128afc75de",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "suggest": {
+                "ext-dio": "Needed for SerialDio (>=0.0.2)"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fawno\\PhpSerial\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fawno",
+                    "homepage": "https://github.com/fawno/PHP-Serial/graphs/contributors"
+                }
+            ],
+            "description": "Serial port access convenience class",
+            "support": {
+                "issues": "https://github.com/fawno/PHP-Serial/issues",
+                "source": "https://github.com/fawno/PHP-Serial"
+            },
+            "time": "2021-10-10T06:11:33+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.4.0",
+        "ext-dio": ">=0.2.0"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
+}

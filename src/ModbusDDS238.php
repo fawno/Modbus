@@ -44,8 +44,8 @@
 		private $modbus = null;
 		protected $dds238_response = null;
 
-		public function __construct () {
-			$this->modbus = new ModbusRTU;
+		public function __construct (string $device = null) {
+			$this->modbus = new ModbusRTU($device);
 
 			$this->dds238_response = null;
 			foreach (self::DDS238_REGISTERS as $name => $format) {
@@ -56,11 +56,6 @@
 
 		public function setDevice (string $device) {
 			$this->modbus->setDevice($device);
-			$this->modbus->setDataRate(9600);
-			$this->modbus->setParity(0);
-			$this->modbus->setDataBits(8);
-			$this->modbus->setStopBits(1);
-			$this->modbus->setFlowControl(0);
 		}
 
 		public function open () {
