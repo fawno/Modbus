@@ -92,7 +92,9 @@
 		public function read (bool $raw = false) {
 			$time = time();
 
-			$buffer = $this->modbus->requestSend(0x01, 0x03, 0, 21);
+			do {
+				$buffer = $this->modbus->requestSend(0x01, 0x03, 0, 21);
+			} while (!strlen(str_replace("\n", '', $buffer)));
 
 			if (strlen($buffer) == 47) {
 				if (bin2hex(substr($buffer, -8, 6)) == '000000000000') {

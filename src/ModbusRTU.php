@@ -113,9 +113,11 @@
 				throw new ErrorException('Unable to set unblocking mode on device', 0, E_USER_WARNING);
 			}
 
-			fwrite($this->_serial, hex2bin('000300150001941f'));
-			usleep(100000);
-			$buffer = stream_get_contents($this->_serial);
+			if (!stream_set_timeout($this->_serial, 0, 100000)) {
+				throw new ErrorException('Unable to set timeout on device', 0, E_USER_WARNING);
+			}
+
+			$this->sync();
 
 			return true;
 		}
@@ -140,8 +142,6 @@
 				throw new ErrorException('Error while sending message', 0, E_USER_WARNING);
 			}
 
-			usleep((int) ($wait * 1000000));
-
 			return true;
 		}
 
@@ -150,12 +150,14 @@
 				throw new ErrorException('Device must be opened to read it', 0, E_USER_WARNING);
 			}
 
-			$buffer = '';
-			do {
-				$buffer .= stream_get_contents($this->_serial);
-			} while (strlen($buffer) > 2 and substr($buffer, -2) != $this->crc16(substr($buffer, 0, -2)));
+			$buffer = stream_get_contents($this->_serial);
 
 			return $buffer;
+		}
+
+		public function sync () {
+			fwrite($this->_serial, hex2bin('000300150001941f'));
+			$buffer = stream_get_contents($this->_serial);
 		}
 
 		public function crc16 ($data) {
@@ -193,10 +195,8 @@
 				}
 			}
 
-			if (strlen($buffer) > 4) {
-				if (substr($buffer, 3, 2) == $this->crc16(substr($buffer, 0, 3))) {
-					return substr($buffer, 0, 5);
-				}
+			if (strlen($buffer) > 4 and substr($buffer, 3, 2) == $this->crc16(substr($buffer, 0, 3))) {
+				return substr($buffer, 0, 5);
 			}
 
 			return false;
