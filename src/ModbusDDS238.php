@@ -58,6 +58,34 @@
 			$this->modbus->setDevice($device);
 		}
 
+		public function setDataRate (int $data_rate = 9600) {
+			$this->modbus->setDataRate($data_rate);
+		}
+
+		public function setParity (int $parity = 0) {
+			$this->modbus->setParity($parity);
+		}
+
+		public function setDataBits (int $data_bits = 8) {
+			$this->modbus->setDataBits($data_bits);
+		}
+
+		public function setStopBits (int $stop_bits = 1) {
+			$this->modbus->setStopBits($stop_bits);
+		}
+
+		public function setFlowControl (int $flow_control = 0) {
+			$this->modbus->setFlowControl($flow_control);
+		}
+
+		public function setBlocking (bool $enable = false) : bool {
+			return $this->modbus->setBlocking($enable);
+		}
+
+		public function setTimeout (int $seconds = 0, int $microseconds = 100000) : bool {
+			return $this->modbus->setTimeout($seconds, $microseconds);
+		}
+
 		public function open () {
 			return $this->modbus->open();
 		}
