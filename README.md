@@ -1,4 +1,9 @@
 # Modbus
+[![GitHub license](https://img.shields.io/github/license/fawno/Modbus)](https://github.com/fawno/Modbus/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/fawno/Modbus)](https://github.com/fawno/Modbus/releases)
+[![Packagist](https://img.shields.io/packagist/v/fawno/modbus)](https://packagist.org/packages/fawno/modbus)
+[![PHP](https://img.shields.io/packagist/php-v/fawno/modbus)](https://php.net)
+
 Modbus RTU serial protocol in PHP
 
 # Install
