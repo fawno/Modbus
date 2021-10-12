@@ -12,9 +12,6 @@
 		public const MODBUS_ADU = 'C1station/C1function/C*data/';
 		public const MODBUS_ERROR = 'C1station/C1error/C1exception/';
 
-		private const MODBUS_REQUEST = 'C2n2';
-		//public const MODBUS_RESPONSE = 'C1station/C1function/C1count/n*records/';
-
 		protected $_options = [
 			'data_rate' => 9600,
 			'data_bits' => 8,
@@ -434,10 +431,6 @@
 				throw new Exception(sprintf('Response lenght too short: "%s"', bin2hex($response)), -1);
 			}
 
-			if (substr($response, -2) != $this->crc16(substr($response, 0, -2))) {
-				throw new Exception('Error check fails', -2);
-			}
-
 			$adu_request = unpack(self::MODBUS_ADU, $request);
 			$adu_response = unpack(self::MODBUS_ERROR, $response);
 			if ($adu_request['function'] != $adu_response['error']) {
@@ -447,6 +440,10 @@
 				} else {
 					throw new Exception('Illegal error code', -3);
 				}
+			}
+
+			if (substr($response, -2) != $this->crc16(substr($response, 0, -2))) {
+				throw new Exception(sprintf('Error check fails: "%s"', bin2hex($response)), -2);
 			}
 
 			return $response;
