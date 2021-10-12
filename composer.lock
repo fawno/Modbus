@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b42fbd5f13a603ac20cb1d8e0a8b4917",
+    "content-hash": "e2e2531f184b3b4adc246cf4cdb4097d",
     "packages": [
         {
             "name": "fawno/php-serial",
-            "version": "0.0.1",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fawno/PHP-Serial.git",
-                "reference": "d42e018506cda19047c90fc194af58128afc75de"
+                "reference": "d2bb63afa91ab6489b04e92197a047e99bfda166"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fawno/PHP-Serial/zipball/d42e018506cda19047c90fc194af58128afc75de",
-                "reference": "d42e018506cda19047c90fc194af58128afc75de",
+                "url": "https://api.github.com/repos/fawno/PHP-Serial/zipball/d2bb63afa91ab6489b04e92197a047e99bfda166",
+                "reference": "d2bb63afa91ab6489b04e92197a047e99bfda166",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "issues": "https://github.com/fawno/PHP-Serial/issues",
                 "source": "https://github.com/fawno/PHP-Serial"
             },
-            "time": "2021-10-10T06:11:33+00:00"
+            "time": "2021-10-11T17:07:28+00:00"
         }
     ],
     "packages-dev": [],
