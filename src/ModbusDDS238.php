@@ -3,12 +3,13 @@
 
 	use Fawno\Modbus\ModbusRTU;
 
-	class ModbusDDS238 {
-		public const MODBUS_RESPONSE = ModbusRTU::MODBUS_RESPONSE;
-		public const MODBUS_ERROR = ModbusRTU::MODBUS_ERROR;
-
+	/**
+	 * @package Fawno\Modbus
+	 *
+	*/
+	class ModbusDDS238 extends ModbusRTU {
 		public const DDS238_REGISTERS = [
-			'address' => 'C1',
+			'station' => 'C1',
 			'function' => 'C1',
 			'count' => 'C1',
 			'total_energy' => 'N1',
@@ -41,107 +42,61 @@
 			'frecuency' => 1/100,			// cHz / 100 => Hz
 		];
 
-		private $modbus = null;
 		protected $dds238_response = null;
 
 		public function __construct (string $device = null) {
-			$this->modbus = new ModbusRTU($device);
-
 			$this->dds238_response = null;
 			foreach (self::DDS238_REGISTERS as $name => $format) {
 				$this->dds238_response .= $format . $name . '/';
 			}
-			$this->dds238_response .= 'v1crc/';
+
+			parent::__construct($device);
 		}
 
-		public function setDevice (string $device) {
-			$this->modbus->setDevice($device);
-		}
-
-		public function setDataRate (int $data_rate = 9600) {
-			$this->modbus->setDataRate($data_rate);
-		}
-
-		public function setParity (int $parity = 0) {
-			$this->modbus->setParity($parity);
-		}
-
-		public function setDataBits (int $data_bits = 8) {
-			$this->modbus->setDataBits($data_bits);
-		}
-
-		public function setStopBits (int $stop_bits = 1) {
-			$this->modbus->setStopBits($stop_bits);
-		}
-
-		public function setFlowControl (int $flow_control = 0) {
-			$this->modbus->setFlowControl($flow_control);
-		}
-
-		public function setBlocking (bool $enable = false) : bool {
-			return $this->modbus->setBlocking($enable);
-		}
-
-		public function setTimeout (int $seconds = 0, int $microseconds = 100000) : bool {
-			return $this->modbus->setTimeout($seconds, $microseconds);
-		}
-
-		public function open () {
-			return $this->modbus->open();
-		}
-
-		public function close () {
-			return $this->modbus->close();
-		}
-
-		public function crc16 (string $data) {
-			return $this->modbus->crc16($data);
-		}
-
-		public function setTime (int $time = null) {
+		public function setTime (int $station = 0x01, int $time = null) {
 			$time = $time ?: time();
 			$time = unpack('n3', pack('C*', ...explode(';', date('y;m;d;H;i;s', $time))));
-			$buffer = $this->modbus->requestSend(0x01, 0x10, 0x0012, 3, ...$time);
 
-			return $buffer;
+			$response = $this->writeMultipleRegisters($station, 0x0012, 3, ...$time);
+
+			return $response;
 		}
 
-		public function resetTotalEnergy () {
-			$buffer = $this->modbus->requestSend(0x01, 0x10, 0x0000, 2, 0, 0);
+		public function resetTotalEnergy (int $station = 0x01) {
+			$response = $this->writeMultipleRegisters($station, 0x0000, 2, 0, 0);
 
-			return $buffer;
+			return $response;
 		}
 
-		public function read (bool $raw = false) {
+		public function getData (int $station = 0x01, bool $raw = false) {
 			$time = time();
 
-			do {
-				$buffer = $this->modbus->requestSend(0x01, 0x03, 0, 21);
-			} while (!strlen(str_replace("\n", '', $buffer)));
+			$response = $this->readHoldingRegisters($station, 0, 21, true);
 
-			if (strlen($buffer) == 47) {
-				if (bin2hex(substr($buffer, -8, 6)) == '000000000000') {
-					$buffer = substr($buffer, 0, -8);
-					$buffer .= pack('C*', ...explode(';', date('y;m;d;H;i;s', $time)));
-					$buffer .= $this->crc16($buffer);
+			if (strlen($response) == 47) {
+				if (bin2hex(substr($response, -8, 6)) == '000000000000') {
+					$response = substr($response, 0, -8);
+					$response .= pack('C*', ...explode(';', date('y;m;d;H;i;s', $time)));
+					$response .= $this->crc16($response);
 				}
 
 				if (!$raw) {
-					$buffer = $this->parse($buffer);
+					$response = $this->parse($response);
 				}
 			}
 
-			return $buffer;
+			return $response;
 		}
 
-		public function parse (string $buffer) {
-			if (strlen($buffer) != 47) {
+		public function parse (string $response) {
+			if (strlen($response) != 47) {
 				return false;
 			}
 
-			$response = unpack($this->dds238_response, $buffer);
-			$time = unpack('C*', substr($buffer, -8, 6));
+			$time = unpack('C*', substr($response, -8, 6));
 			$time = date('Y-m-d H:i:s', strtotime(sprintf('%s-%s-%s %s:%s:%s', ...$time)));
+
+			$response = unpack($this->dds238_response, $response);
 
 			$data = ['time' => $time];
 			foreach (self::DDS238_REGISTERS_SCALE as $key => $scale) {
