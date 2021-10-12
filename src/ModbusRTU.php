@@ -428,7 +428,7 @@
 			$response = $this->read();
 
 			if (strlen($response) < 4) {
-				throw new Exception(sprintf('Response lenght too short: "%s"', bin2hex($response)), -1);
+				throw new Exception('Response lenght too short', -1, $request, $response);
 			}
 
 			$adu_request = unpack(self::MODBUS_ADU, $request);
@@ -436,14 +436,14 @@
 			if ($adu_request['function'] != $adu_response['error']) {
 				// Error code = Function code + 0x80
 				if ($adu_response['error'] == ($adu_request['function'] + 0x80)) {
-					throw new Exception(null, $adu_response['exception']);
+					throw new Exception(null, $adu_response['exception'], $request, $response);
 				} else {
-					throw new Exception('Illegal error code', -3);
+					throw new Exception('Illegal error code', -3, $request, $response);
 				}
 			}
 
 			if (substr($response, -2) != $this->crc16(substr($response, 0, -2))) {
-				throw new Exception(sprintf('Error check fails: "%s"', bin2hex($response)), -2);
+				throw new Exception('Error check fails', -2, $request, $response);
 			}
 
 			return $response;
