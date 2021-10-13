@@ -2,12 +2,13 @@
   namespace Fawno\Modbus;
 
   use Fawno\PhpSerial\SerialDio;
-  use Fawno\Modbus\Exception;
+  use Fawno\PhpSerial\SerialException;
+  use Fawno\Modbus\ModbusException;
 
   /**
    * @package Fawno\Modbus
    *
-  */
+   */
   class ModbusRTU extends SerialDio {
     public const MODBUS_ADU = 'C1station/C1function/C*data/';
     public const MODBUS_ERROR = 'C1station/C1error/C1exception/';
@@ -24,7 +25,7 @@
     /**
      * @param string $mode
      * @return void
-     * @throws ErrorException
+     * @throws SerialException
      */
     public function open (string $mode = 'r+b') {
       parent::open('r+b');
@@ -278,11 +279,11 @@
      * Sub-function (n1)
      *
      * @return string|false
-     * @throws Exception
+     * @throws ModbusException
      */
     public function diagnostics(int $station, int $subfunction) {
       if (func_num_args() < 3) {
-        throw new Exception('Incorrect number of arguments', -4);
+        throw new ModbusException('Incorrect number of arguments', -4);
       }
 
       $request = pack('C2n1', $station, 0x08, $subfunction);
@@ -353,11 +354,11 @@
      * Quantity of Outputs (n1)
      *
      * @return string|false
-     * @throws Exception
+     * @throws ModbusException
      */
     public function writeMultipleCoils (int $station, int $starting_address, int $quantity) {
       if (func_num_args() != (3 + $quantity)) {
-        throw new Exception('Incorrect number of arguments', -4);
+        throw new ModbusException('Incorrect number of arguments', -4);
       }
 
       $request = pack('C2n2', $station, 0x0F, $starting_address, $quantity);
@@ -384,11 +385,11 @@
      * Registers Value (n*)
      *
      * @return string|false
-     * @throws Exception
+     * @throws ModbusException
      */
     public function writeMultipleRegisters (int $station, int $starting_address, int $quantity) {
       if (func_num_args() != (3 + $quantity)) {
-        throw new Exception('Incorrect number of arguments', -4);
+        throw new ModbusException('Incorrect number of arguments', -4);
       }
 
       $request = pack('C2n2', $station, 0x10, $starting_address, $quantity);
@@ -421,14 +422,14 @@
     /**
      * @param string $request
      * @return string|false
-     * @throws Exception
+     * @throws ModbusException
      */
     public function sendRequest (string $request) {
       $this->send($request);
       $response = $this->read();
 
       if (strlen($response) < 4) {
-        throw new Exception('Response lenght too short', -1, $request, $response);
+        throw new ModbusException('Response lenght too short', -1, $request, $response);
       }
 
       $adu_request = unpack(self::MODBUS_ADU, $request);
@@ -436,14 +437,14 @@
       if ($adu_request['function'] != $adu_response['error']) {
         // Error code = Function code + 0x80
         if ($adu_response['error'] == ($adu_request['function'] + 0x80)) {
-          throw new Exception(null, $adu_response['exception'], $request, $response);
+          throw new ModbusException(null, $adu_response['exception'], $request, $response);
         } else {
-          throw new Exception('Illegal error code', -3, $request, $response);
+          throw new ModbusException('Illegal error code', -3, $request, $response);
         }
       }
 
       if (substr($response, -2) != $this->crc16(substr($response, 0, -2))) {
-        throw new Exception('Error check fails', -2, $request, $response);
+        throw new ModbusException('Error check fails', -2, $request, $response);
       }
 
       return $response;

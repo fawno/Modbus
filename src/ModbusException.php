@@ -2,9 +2,9 @@
   namespace Fawno\Modbus;
 
   use \Throwable;
-  use \RuntimeException;
+  use \Exception;
 
-  class Exception extends RuntimeException {
+  class ModbusException extends Exception {
     public const EXCEPTION_CODES = [
       0x00 => 'Undefined failure code',
       0x01 => 'Illegal function',

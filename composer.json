@@ -1,6 +1,6 @@
 {
   "name": "fawno/modbus",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Modbus RTU serial protocol in PHP",
   "keywords": ["Modbus RTU", "DDS238"],
   "license": "MIT",
