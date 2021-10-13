@@ -1,10 +1,10 @@
 # Hiking DDS238-2 ZN/S energy meter
 - [Modbus holding registers:](#modbus-holding-registers)
-	- [Notes:](#notes)
-		- [Note 1:](#note-1)
-		- [Note 2:](#note-2)
-		- [Note 3:](#note-3)
-		- [Data formats](#data-formats)
+  - [Notes:](#notes)
+    - [Note 1:](#note-1)
+    - [Note 2:](#note-2)
+    - [Note 3:](#note-3)
+    - [Data formats](#data-formats)
 - [Writing registers](#writing-registers)
 
 ## Modbus holding registers:

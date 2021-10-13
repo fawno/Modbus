@@ -1,27 +1,27 @@
 {
-    "name": "fawno/modbus",
-    "version": "0.1.2",
-    "description": "Modbus RTU serial protocol in PHP",
-    "keywords": ["Modbus RTU", "DDS238"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Fawno",
-            "homepage": "https://github.com/fawno/Modbus/graphs/contributors"
-        }
-    ],
-    "support": {
-        "issues": "https://github.com/fawno/Modbus/issues",
-        "source": "https://github.com/fawno/Modbus"
-    },
-    "require": {
-				"php": ">=7.4.0",
-				"ext-dio": ">=0.2.0",
-        "fawno/php-serial": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Fawno\\Modbus\\": "src"
-        }
+  "name": "fawno/modbus",
+  "version": "0.1.2",
+  "description": "Modbus RTU serial protocol in PHP",
+  "keywords": ["Modbus RTU", "DDS238"],
+  "license": "MIT",
+  "authors": [
+    {
+        "name": "Fawno",
+        "homepage": "https://github.com/fawno/Modbus/graphs/contributors"
     }
+  ],
+  "support": {
+    "issues": "https://github.com/fawno/Modbus/issues",
+    "source": "https://github.com/fawno/Modbus"
+  },
+  "require": {
+    "php": ">=7.4.0",
+    "ext-dio": ">=0.2.0",
+    "fawno/php-serial": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Fawno\\Modbus\\": "src"
+    }
+  }
 }
