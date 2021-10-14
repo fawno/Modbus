@@ -18,16 +18,14 @@
       0x0B => 'Gateway target device failed to respond',
     ];
 
-    protected $_defaultMessage = '';
-    protected $_defaultCode = 0x00;
+    private $previous = null;
     protected $request = null;
     protected $response = null;
 
     public function __construct (string $message = null, int $code = 0, string $request = null, string $response = null, Throwable $previous = null) {
-      $message = $message ?: $this->_defaultMessage;
-      $code = $code ?: $this->_defaultCode;
-      $this->request = bin2hex($request);
-      $this->response = bin2hex($response);
+      $this->previous = !is_null($previous) ? $previous : null;
+      $this->request = !is_null($request) ? bin2hex($request) : null;
+      $this->response = !is_null($response) ? bin2hex($response) : null;
 
       if (empty($message) and $code != 0) {
         $message = empty(self::EXCEPTION_CODES[$code]) ? self::EXCEPTION_CODES[0x00] : self::EXCEPTION_CODES[$code];
@@ -42,5 +40,29 @@
 
     public function getResponse () {
       return $this->response;
+    }
+
+    public function __toString () {
+      $output = '';
+
+      if ($this->previous) {
+        $output .= $this->previous . "\n";
+        $output .= "\n" . 'Next ';
+      }
+
+      $output .= sprintf('%s: %s in %s:%s', get_class($this), $this->message, $this->file, $this->line) . "\n";
+
+      if ($this->request !== null) {
+        $output .= 'Request: "' . $this->request . '"' . "\n";
+      }
+
+      if ($this->response !== null) {
+        $output .= 'Response: "' . $this->response . '"' . "\n";
+      }
+
+      $output .= 'Stack trace:' . "\n";
+      $output .= $this->getTraceAsString();
+
+      return $output;
     }
   }
