@@ -46,8 +46,7 @@
       $output = '';
 
       if ($this->previous) {
-        $output .= $this->previous . "\n";
-        $output .= "\n" . 'Next ';
+        $output .= $this->previous . "\n" . 'Next ';
       }
 
       $output .= sprintf('%s: %s in %s:%s', get_class($this), $this->message, $this->file, $this->line) . "\n";
@@ -60,8 +59,10 @@
         $output .= 'Response: "' . $this->response . '"' . "\n";
       }
 
-      $output .= 'Stack trace:' . "\n";
-      $output .= $this->getTraceAsString();
+      $trace = $this->getTraceAsString();
+      if ($trace) {
+        $output .= 'Stack trace:' . "\n" . $trace . "\n";
+      }
 
       return $output;
     }
