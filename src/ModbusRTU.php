@@ -1,6 +1,13 @@
 <?php
+  declare(strict_types=1);
+
   namespace Fawno\Modbus;
 
+  use Fawno\PhpSerial\SerialConfig;
+  use Fawno\PhpSerial\Config\BaudRates;
+  use Fawno\PhpSerial\Config\StopBits;
+  use Fawno\PhpSerial\Config\Parity;
+  use Fawno\PhpSerial\Config\DataBits;
   use Fawno\PhpSerial\SerialDio;
   use Fawno\PhpSerial\SerialException;
   use Fawno\Modbus\ModbusException;
@@ -13,25 +20,31 @@
     public const MODBUS_ADU = 'C1station/C1function/C*data/';
     public const MODBUS_ERROR = 'C1station/C1error/C1exception/';
 
-    protected $_options = [
-      'data_rate' => 9600,
-      'data_bits' => 8,
-      'stop_bits' => 1,
-      'parity' => 0,
-      'flow_control' => 0,
-      'is_canonical' => 1,
-    ];
-
     /**
      * @param string $mode
-     * @return void
+     * @return ModbusRTU
      * @throws SerialException
      */
-    public function open (string $mode = 'r+b') {
+    public function open (string $mode = 'r+b') : ModbusRTU {
       parent::open('r+b');
 
-      $this->setBlocking(0);
+      $this->setBlocking(false);
       $this->setTimeout(0, 100000);
+
+      return $this;
+    }
+
+    public function __construct (string $device, SerialConfig $config = null) {
+      if ($config === null) {
+        $config = new SerialConfig;
+        $config->setBaudRate(BaudRates::B9600);
+        $config->setDataBits(DataBits::CS8);
+        $config->setStopBits(StopBits::ONE);
+        $config->setParity(Parity::NONE);
+        $config->setFlowControl(false);
+      }
+
+      parent::__construct($device, $config);
     }
 
     /**

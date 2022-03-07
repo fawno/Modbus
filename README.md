@@ -19,8 +19,7 @@ composer require fawno/modbus
   use Fawno\Modbus\ModbusDDS238;
 
   // Configure port and open it
-  $dds238 = new ModbusDDS238;
-  $dds238->setDevice('COM4');
+  $dds238 = new ModbusDDS238('COM4');
   $dds238->open();
 
   // Read parsed data

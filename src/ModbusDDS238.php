@@ -1,7 +1,10 @@
 <?php
+  declare(strict_types=1);
+
   namespace Fawno\Modbus;
 
   use Fawno\Modbus\ModbusRTU;
+  use Fawno\PhpSerial\SerialConfig;
 
   /**
    * @package Fawno\Modbus
@@ -44,13 +47,13 @@
 
     protected $dds238_response = null;
 
-    public function __construct (string $device = null) {
+    public function __construct (string $device, SerialConfig $config = null) {
       $this->dds238_response = null;
       foreach (self::DDS238_REGISTERS as $name => $format) {
         $this->dds238_response .= $format . $name . '/';
       }
 
-      parent::__construct($device);
+      parent::__construct($device, $config);
     }
 
     public function setTime (int $station = 0x01, int $time = null) {
