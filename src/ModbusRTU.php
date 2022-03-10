@@ -42,6 +42,7 @@
         $config->setStopBits(StopBits::ONE);
         $config->setParity(Parity::NONE);
         $config->setFlowControl(false);
+        $config->setCanonical(false);
       }
 
       parent::__construct($device, $config);
